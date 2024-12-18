@@ -172,7 +172,7 @@ def main_window():
     menu_bar.add_cascade(label="Opciones", menu=user_menu)
     root.config(menu=menu_bar)
 
-    tk.Label(root, text="Bienvenido a la Aplicación de Idiomas", font=("Arial", 16)).pack(pady=20)
+    tk.Label(root, text="Traitor Translator", font=("Arial", 16)).pack(pady=20)
 
     # Opciones de aprendizaje
     tk.Button(root, text="Grammar", command=open_grammar).pack(pady=10)
