@@ -1,12 +1,16 @@
 import tkinter as tk
 from tkinter import messagebox
+from connect import validate_user, register_user, save_user_data, load_user_data, delete_user_data
 
 # Variables globales para el estado de usuario
 logged_in_user = None
 
 # Función para verificar si el usuario ha hecho log out
 def verify_user_login():
-    if logged_in_user:
+    user_data = load_user_data()
+    if user_data and validate_user(user_data["username"], user_data.get("password", "")):
+        global logged_in_user
+        logged_in_user = user_data["username"]
         main_window()
     else:
         login_window()
@@ -16,13 +20,6 @@ def clear_window():
     for widget in root.winfo_children():
         widget.destroy()
 
-# Función para cambiar tema claro/oscuro
-def toggle_theme(theme):
-    if theme == "dark":
-        root.tk_setPalette(background="#333", foreground="#fff")
-    else:
-        root.tk_setPalette(background="#fff", foreground="#000")
-
 # Función para mostrar el contenido de login
 def login_window():
     clear_window()
@@ -31,10 +28,11 @@ def login_window():
         global logged_in_user
         username = entry_user.get()
         password = entry_pass.get()
-        
+
         # Validar login con base de datos
-        if username == "admin" and password == "password":
+        if validate_user(username, password):
             logged_in_user = username
+            save_user_data(username, password)
             main_window()
         else:
             messagebox.showerror("Error", "Credenciales incorrectas")
@@ -55,14 +53,20 @@ def register_window():
     clear_window()
 
     def register():
-        email = entry_email.get()
         username = entry_user.get()
         password = entry_pass.get()
         password2 = entry_pass2.get()
-        # Validar registro e enviarlo a la base de datos (hay que encriptar las contraseñas)
+        email = entry_email.get()
+
+        # Validar registro e enviarlo a la base de datos
         if password == password2:
-            messagebox.showinfo("Registro", "Usuario registrado exitosamente")
-            login_window()
+            if register_user(1100, username, password, email):
+                messagebox.showinfo("Registro", "Usuario registrado exitosamente")
+                logged_in_user = username
+                save_user_data(username, password)
+                main_window()
+            else:
+                messagebox.showerror("Error", "No se pudo registrar el usuario")
         else:
             messagebox.showerror("Error", "Las contraseñas no coinciden")
 
@@ -84,13 +88,25 @@ def register_window():
 
     tk.Button(root, text="Registrarse", command=register).pack(pady=20)
 
-
+# Función para cerrar sesión
+def logout():
+    global logged_in_user
+    logged_in_user = None
+    delete_user_data()
+    messagebox.showinfo("Sesión", "Has cerrado sesión")
+    login_window()
 
 # Función para mostrar la ventana de ayuda
 def help_window():
     clear_window()
     tk.Label(root, text="Texto explicativo aquí.\nContacto: contacto@soporte.com").pack(pady=20)
     tk.Button(root, text="Volver", command=main_window).pack(pady=20)
+    
+def toggle_theme(theme):
+    if theme == "dark":
+        root.tk_setPalette(background="#333", foreground="#fff")
+    else:
+        root.tk_setPalette(background="#fff", foreground="#000")
 
 # Función para mostrar la ventana de configuración
 def settings_window():
@@ -127,13 +143,6 @@ def user_window():
     tk.Button(root, text="Cambiar nombre", command=change_username).pack(pady=10)
     tk.Button(root, text="Cerrar sesión", command=logout).pack(pady=10)
     tk.Button(root, text="Volver", command=main_window).pack(pady=20)
-
-# Función para cerrar sesión
-def logout():
-    global logged_in_user
-    logged_in_user = None
-    messagebox.showinfo("Sesión", "Has cerrado sesión")
-    login_window()
 
 # Ventana principal con opciones de gramática, etc.
 def main_window():
@@ -172,11 +181,8 @@ def main_window():
     tk.Button(root, text="Reading", command=open_reading).pack(pady=10)
     tk.Button(root, text="Listening", command=open_listening).pack(pady=10)
 
-
-
 # Inicializar la aplicación
 root = tk.Tk()
 root.title("Traitor Translator")
 verify_user_login()
-
 root.mainloop()
