@@ -47,7 +47,7 @@ def get_connection():
     server = 'YOSHWA\\SQLEXPRESS' 
     database = 'TraitorTranslator'  
     username = 'jose'  
-    password = '12345678'  
+    password = '1234'  
 
     try:
         connection_string = (
