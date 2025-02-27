@@ -40,10 +40,23 @@ def verify_user_login():
 def clear_window():
     for widget in root.winfo_children():
         widget.destroy()
+    
+def create_centered_window(root, title, width, height):
+    root.title(title)
+    root.geometry(f"{width}x{height}")
+    root.resizable(False, False)
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+    root.geometry(f"{width}x{height}+{x}+{y}")
+    root.configure(bg="#2C3E50")
+
 
 # Función para mostrar el contenido de login
 def login_window():
     clear_window()
+    tk.Label(root, text="Iniciar Sesión", font=("Arial", 16, "bold"), bg="#2C3E50", fg="white").pack(pady=20)
 
     def login():
         global logged_in_user
@@ -58,21 +71,29 @@ def login_window():
         else:
             messagebox.showerror("Error", "Credenciales incorrectas")
 
-    tk.Label(root, text="Usuario").pack(pady=10)
+    tk.Label(root, text="Usuario", bg="#2C3E50", fg="white").pack()
     entry_user = tk.Entry(root)
     entry_user.pack()
 
-    tk.Label(root, text="Contraseña").pack(pady=10)
+    tk.Label(root, text="Contraseña", bg="#2C3E50", fg="white").pack()
     entry_pass = tk.Entry(root, show='*')
     entry_pass.pack()
 
-    tk.Button(root, text="Login", command=login).pack(pady=20)
-    tk.Button(root, text="Registrarse", command=register_window).pack()
+    tk.Button(root, text="Login", command=login, font=("Arial", 12), bg="#3498DB", 
+          fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+
+    tk.Button(root, text="Registrarse", command=register_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+
+
+
 
 # Función para mostrar el contenido de registro
 def register_window():
     clear_window()
-
+    tk.Label(root, text="Crear Cuenta", font=("Arial", 16, "bold"), bg="#2C3E50", fg="white").pack(pady=20)     
     def register():
         username = entry_user.get()
         password = entry_pass.get()
@@ -91,23 +112,25 @@ def register_window():
         else:
             messagebox.showerror("Error", "Las contraseñas no coinciden")
 
-    tk.Label(root, text="Email").pack(pady=10)
+    tk.Label(root, text="Email", bg="#2C3E50", fg="white").pack()
     entry_email = tk.Entry(root)
     entry_email.pack()
 
-    tk.Label(root, text="Usuario").pack(pady=10)
+    tk.Label(root, text="Usuario", bg="#2C3E50", fg="white").pack()
     entry_user = tk.Entry(root)
     entry_user.pack()
 
-    tk.Label(root, text="Contraseña").pack(pady=10)
+    tk.Label(root, text="Contraseña", bg="#2C3E50", fg="white").pack()
     entry_pass = tk.Entry(root, show='*')
     entry_pass.pack()
 
-    tk.Label(root, text="Confirmar Contraseña").pack(pady=10)
+    tk.Label(root, text="Confirmar Contraseña", bg="#2C3E50", fg="white").pack()
     entry_pass2 = tk.Entry(root, show='*')
     entry_pass2.pack()
-
-    tk.Button(root, text="Registrarse", command=register).pack(pady=20)
+    
+    tk.Button(root, text="Registrarse", command=register, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
 
 # Función para cerrar sesión
 def logout():
@@ -553,7 +576,7 @@ def confirm_exit():
 
 # Inicializar la aplicación
 root = tk.Tk()
-root.title("Traitor Translator")
+create_centered_window(root, "Traitor Translator", 400, 500)
 verify_user_login()
 root.mainloop()
 
