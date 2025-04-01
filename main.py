@@ -7,7 +7,7 @@ from connect import validate_user, register_user, save_user_data, load_user_data
 
 pygame.mixer.init()
 
-# Variables globales para el estado de usuario
+# Variables globales para el estado de usuario y +
 logged_in_user = None
 high_scores = {"facil": 0, "medio": 0, "dificil": 0}
 difficulty_mapping = {"facil": 1, "medio": 2, "dificil": 3}
@@ -35,6 +35,16 @@ def verify_user_login():
         main_window()
     else:
         login_window()
+
+
+def create_centered_window(root, title, width, height):
+    root.title(title)
+    root.geometry(f"{width}x{height}")
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+    root.geometry(f"{width}x{height}+{x}+{y}")
 
 # Función para limpiar la ventana actual
 def clear_window():
@@ -66,8 +76,15 @@ def login_window():
     entry_pass = tk.Entry(root, show='*')
     entry_pass.pack()
 
-    tk.Button(root, text="Login", command=login).pack(pady=20)
-    tk.Button(root, text="Registrarse", command=register_window).pack()
+    
+    tk.Button(root, text="Login", command=login, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
+    tk.Button(root, text="Registrarse", command=register_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=0)
+    
+    
 
 # Función para mostrar el contenido de registro
 def register_window():
@@ -81,7 +98,7 @@ def register_window():
 
         # Validar registro e enviarlo a la base de datos
         if password == password2:
-            if register_user(5, username, password, email):
+            if register_user(9, username, password, email):
                 messagebox.showinfo("Registro", "Usuario registrado exitosamente")
                 logged_in_user = username
                 save_user_data(username, password)
@@ -107,7 +124,9 @@ def register_window():
     entry_pass2 = tk.Entry(root, show='*')
     entry_pass2.pack()
 
-    tk.Button(root, text="Registrarse", command=register).pack(pady=20)
+    tk.Button(root, text="Registrarse", command=register, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 # Función para cerrar sesión
 def logout():
@@ -121,7 +140,10 @@ def logout():
 def help_window():
     clear_window()
     tk.Label(root, text="Texto explicativo aquí.\nContacto: contacto@soporte.com").pack(pady=20)
-    tk.Button(root, text="Volver", command=main_window).pack(pady=20)
+    
+    tk.Button(root, text="Volver", command=main_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
     
 def toggle_theme(theme):
     if theme == "dark":
@@ -140,9 +162,13 @@ def settings_window():
     theme_var = tk.StringVar(value="light")
     tk.Radiobutton(root, text="Claro", variable=theme_var, value="light", command=lambda: toggle_theme("light")).pack()
     tk.Radiobutton(root, text="Oscuro", variable=theme_var, value="dark", command=lambda: toggle_theme("dark")).pack()
-
-    tk.Button(root, text="Pantalla Completa", command=toggle_fullscreen).pack(pady=20)
-    tk.Button(root, text="Volver", command=main_window).pack(pady=20)
+    
+    tk.Button(root, text="Pantalla Completa", command=toggle_fullscreen, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
+    tk.Button(root, text="Volver", command=main_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
 
 # Función para mostrar la ventana de usuario
 def user_window():
@@ -160,10 +186,16 @@ def user_window():
     tk.Label(root, text="Nuevo nombre de usuario:").pack(pady=10)
     entry_new_user = tk.Entry(root)
     entry_new_user.pack()
-
-    tk.Button(root, text="Cambiar nombre", command=change_username).pack(pady=10)
-    tk.Button(root, text="Cerrar sesión", command=logout).pack(pady=10)
-    tk.Button(root, text="Volver", command=main_window).pack(pady=20)
+    
+    tk.Button(root, text="Cambiar nombre", command=change_username, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
+    tk.Button(root, text="Cerrar sesión", command=logout, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
+    tk.Button(root, text="Volver", command=main_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 # Ventana principal con opciones de gramática, etc.
 def main_window():
@@ -179,10 +211,20 @@ def main_window():
 
     tk.Label(root, text="Traitor Translator", font=("Arial", 16)).pack(pady=20)
     
-    tk.Button(root, text="Grammar", command=words_game).pack(pady=10)
-    tk.Button(root, text="Phrases", command=phrases_game).pack(pady=10)
-    tk.Button(root, text="Reading", command=reading).pack(pady=10)
-    tk.Button(root, text="Listening", command=listening).pack(pady=10)
+
+    
+    tk.Button(root, text="Vocabulary", command=words_game, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Phrases", command=phrases_game, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Reading", command=reading, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Listening", command=listening, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
     
     
 def fetch_word(difficulty):
@@ -257,26 +299,47 @@ def words_game():
             if difficulty in ["facil", "medio"]:
                 options = fetch_options_words(correct_word, word_id, table, opposite_table, difficulty)
                 for option in options:
-                    tk.Button(root, text=option, command=lambda opt=option: check_answer(opt)).pack(pady=5)
-                tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+                    tk.Button(root, text=option, command=lambda opt=option: check_answer(opt), font=("Arial", 12), 
+                    bg="#003366", fg="white", bd=0, padx=10, pady=5,  
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+                    
+                tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=20)
             else:
                 entry = tk.Entry(root)
                 entry.pack(pady=5)
-                tk.Button(root, text="Confirmar", command=lambda: check_answer(entry.get())).pack(pady=5)
-                tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+               
+                
+                tk.Button(root, text="Confirmar",command=lambda: check_answer(entry.get()), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+                
+                tk.Button(root, text="Volver",command= confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=20)
 
         next_round(1)
         
     tk.Label(root, text="Selecciona la dificultad", font=("Arial", 14)).pack(pady=10)
-    tk.Button(root, text="Fácil", command=lambda: start_game("facil")).pack(pady=5)
-    tk.Button(root, text="Medio", command=lambda: start_game("medio")).pack(pady=5)
-    tk.Button(root, text="Difícil", command=lambda: start_game("dificil")).pack(pady=5)
     
+    tk.Button(root, text="Fácil",command=lambda: start_game("facil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Medio", command=lambda: start_game("medio"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Difícil", command=lambda: start_game("dificil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
     def confirm_exit():
         if messagebox.askyesno("Confirmar", "¿Seguro que quieres salir al menú principal?"):
             main_window()
     
-    tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+    tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=20)
+    
     
 
 def fetch_phrase(difficulty):
@@ -351,21 +414,36 @@ def phrases_game():
             if difficulty in ["facil", "medio", "dificil"]:
                 options = fetch_phrase_options(correct_phrase, phrase_id, table, opposite_table, difficulty)
                 for option in options:
-                    tk.Button(root, text=option, command=lambda opt=option: check_answer(opt)).pack(pady=5)
-                tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+                    tk.Button(root, text=option, command=lambda opt=option: check_answer(opt), font=("Arial", 12), 
+                    bg="#003366", fg="white", bd=0, padx=10, pady=5, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+                    
+                tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=20)
+                
 
         next_round(1)
         
     tk.Label(root, text="Selecciona la dificultad", font=("Arial", 14)).pack(pady=10)
-    tk.Button(root, text="Fácil", command=lambda: start_game("facil")).pack(pady=5)
-    tk.Button(root, text="Medio", command=lambda: start_game("medio")).pack(pady=5)
-    tk.Button(root, text="Difícil", command=lambda: start_game("dificil")).pack(pady=5)
+    
+    tk.Button(root, text="Fácil", command=lambda: start_game("facil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Medio", command=lambda: start_game("medio"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Difícil", command=lambda: start_game("dificil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
     
     def confirm_exit():
         if messagebox.askyesno("Confirmar", "¿Seguro que quieres salir al menú principal?"):
             main_window()
-    
-    tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+
+    tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 def load_reading_text(difficulty):
     file_number = random.choice([1, 2, 3])
@@ -433,31 +511,57 @@ def reading():
                 rb.pack(anchor="w")
                 option_buttons.append(rb)
             responses.append((question_label, var, correct, option_buttons))
-            
-        tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
-        tk.Button(root, text="Verificar respuestas", command=check_answers).pack(pady=10)
+        
+        tk.Button(root, text="Verificar respuestas", command=check_answers, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=10)
+        tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=10)
         
         
     tk.Label(root, text="Selecciona la dificultad", font=("Arial", 14)).pack(pady=10)
-    tk.Button(root, text="Fácil", command=lambda: start_reading("facil")).pack(pady=5)
-    tk.Button(root, text="Medio", command=lambda: start_reading("medio")).pack(pady=5)
-    tk.Button(root, text="Difícil", command=lambda: start_reading("dificil")).pack(pady=5)
+    
+    tk.Button(root, text="Fácil",  command=lambda: start_reading("facil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Medio", command=lambda: start_reading("medio"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Difícil", command=lambda: start_reading("dificil"), font=("Arial", 12), 
+                    bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+                    highlightthickness=2, highlightbackground="white").pack(pady=5)
+    
+    
     
     def confirm_exit():
         if messagebox.askyesno("Confirmar", "¿Seguro que quieres salir al menú principal?"):
             main_window()
     
-    tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+    
+    tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+        bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+        highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 
 def listening():
     clear_window()
     tk.Label(root, text="Selecciona un nivel de dificultad", font=("Arial", 14)).pack(pady=10)
 
-    tk.Button(root, text="Fácil", command=lambda: start_listening("facil")).pack(pady=5)
-    tk.Button(root, text="Medio", command=lambda: start_listening("medio")).pack(pady=5)
-    tk.Button(root, text="Difícil", command=lambda: start_listening("dificil")).pack(pady=5)
-    tk.Button(root, text="Volver", command=main_window).pack(pady=20)
+
+    
+    tk.Button(root, text="Fácil", command=lambda: start_listening("facil"), font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Medio", command=lambda: start_listening("medio"), font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Dificil", command=lambda: start_listening("dificil"), font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Volver", command=main_window, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 # Función para iniciar el juego de escucha
 def start_listening(level):
@@ -494,10 +598,16 @@ def play_round():
     tk.Label(root, text="Escucha y escribe la palabra:").pack(pady=10)
     entry = tk.Entry(root)
     entry.pack(pady=5)
-
-    tk.Button(root, text="Comprobar", command=lambda: check_answer(entry)).pack(pady=10)
-    tk.Button(root, text="Reproducir de nuevo", command=play_audio).pack(pady=5)
-    tk.Button(root, text="Volver", command=confirm_exit).pack(pady=20)
+    
+    tk.Button(root, text="Comprobar",  command=lambda: check_answer(entry), font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
+    tk.Button(root, text="Reproducir de nuevo", command=play_audio, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=5)
+    tk.Button(root, text="Volver", command=confirm_exit, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 # Función para volver a reproducir el audio
 def play_audio():
@@ -542,8 +652,13 @@ def next_round():
 def show_results():
     clear_window()
     tk.Label(root, text=f"Puntuación final: {score}", font=("Arial", 14)).pack(pady=10)
-    tk.Button(root, text="Jugar de nuevo", command=lambda: start_listening(current_level)).pack(pady=10)
-    tk.Button(root, text="Volver al menú", command=listening).pack(pady=20)
+    
+    tk.Button(root, text="Jugar de nuevo", command=start_listening, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=10)
+    tk.Button(root, text="Volver al menu", command=listening, font=("Arial", 12), 
+          bg="#3498DB", fg="white", bd=0, padx=10, pady=5, width=20, 
+          highlightthickness=2, highlightbackground="white").pack(pady=20)
 
 # Función para confirmar salida al menú principal
 def confirm_exit():
@@ -553,7 +668,7 @@ def confirm_exit():
 
 # Inicializar la aplicación
 root = tk.Tk()
-root.title("Traitor Translator")
+create_centered_window(root, "Traitor Translator", 400, 500)
 verify_user_login()
 root.mainloop()
 

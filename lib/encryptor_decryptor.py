@@ -14,9 +14,9 @@ def load_key(path):
     
     
 def encrypt_password(password, key_path):
-    key = load_key(key_path)  # Asegúrate de que este método existe y funciona
+    key = load_key(key_path)  
     fernet = Fernet(key)
-    encrypted_password = fernet.encrypt(password.encode())  # Esto devuelve bytes
+    encrypted_password = fernet.encrypt(password.encode())  
     return encrypted_password
 
 

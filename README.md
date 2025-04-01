@@ -1,2 +1,0 @@
-# TraitorTranslator
-jijiji

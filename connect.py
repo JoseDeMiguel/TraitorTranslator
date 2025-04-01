@@ -3,7 +3,7 @@ import pickle
 from lib.encryptor_decryptor import load_key, encrypt_password, decrypt_password
 import os
 
-USER_DATA_FILE = "user_data.dat"
+USER_DATA_FILE = "data/user_data.dat"
 KEY_FILE_PATH = "keys/key.key"
 
 def save_user_data(username, password):
